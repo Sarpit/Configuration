@@ -1,0 +1,11 @@
+#######################
+## Using Jenkins CLI ##
+#######################
+
+1. Download jenkins-cli
+
+2. Some basic JenkinsCLi commands
+    $java -jar jenkins-cli.jar -s http://<ip>:8080/ -auth <user>:<password>
+    $java -jar jenkins-cli.jar -s http://<ip>:8080/ -auth <user>:<password> -webSocket help
+    $java -jar jenkins-cli.jar -s http://<ip>:8080/ -auth <user>:<password> -webSocket list-jobs
+    $java -jar jenkins-cli.jar -s http://<ip>:8080/ -auth <user>:<password> -webSocket build <job-name>
