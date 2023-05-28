@@ -1,0 +1,8 @@
+#Run playbook
+$ansible-playbook playbook.yaml
+
+#Inspect the contents of the CSR
+$openssl req -in <name>.csr -noout -text
+
+#Inspect this TLS certificate
+$openssl x509 -in <name>.crt -noout -text
