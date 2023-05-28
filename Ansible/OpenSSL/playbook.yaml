@@ -1,0 +1,30 @@
+---
+ - name: Generating OpenSSL certificates
+   hosts: localhost
+   become: false
+   vars:
+   - path: /tmp
+   - key_name: sample 
+   - domain: "flash.com"
+   tasks:
+   - name: Generating Private key 
+     openssl_privatekey:
+       path: "{{ path }}/{{ key_name }}.key"
+
+   - name: Generate an OpenSSL Certificate Signing Request
+     openssl_csr:
+       path: "{{ path }}/{{ key_name }}.{{ domain}}.csr"
+       privatekey_path: "{{ path }}/{{ key_name }}.key"
+       common_name: "{{ key_name }}.{{ domain }}"
+       C: US
+       ST: North Carolina
+       L: Raleigh
+       O: "Example, Inc."
+       backup: yes
+       
+   - name: Generate a Self Signed OpenSSL certificate
+     openssl_certificate:
+       path: "{{ path }}/{{ domain }}.crt"
+       privatekey_path: "{{ path }}/{{ key_name }}.key"
+       csr_path: "{{ path }}/{{ key_name }}.{{ domain}}.csr"
+       provider: selfsigned
