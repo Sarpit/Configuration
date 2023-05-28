@@ -6,6 +6,10 @@
    - path: /tmp
    - key_name: sample 
    - domain: "flash.com"
+   - C: US
+   - ST: North Carolina
+   - L: Raleigh
+   - O: "Example, Inc."
    tasks:
    - name: Generating Private key 
      openssl_privatekey:
@@ -16,12 +20,12 @@
        path: "{{ path }}/{{ key_name }}.{{ domain}}.csr"
        privatekey_path: "{{ path }}/{{ key_name }}.key"
        common_name: "{{ key_name }}.{{ domain }}"
-       C: US
-       ST: North Carolina
-       L: Raleigh
-       O: "Example, Inc."
+       C: "{{ C }}"
+       ST: "{{ ST }}"
+       L: "{{ L }}"
+       O: "{{ O }}"
        backup: yes
-       
+
    - name: Generate a Self Signed OpenSSL certificate
      openssl_certificate:
        path: "{{ path }}/{{ domain }}.crt"
