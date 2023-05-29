@@ -2,3 +2,14 @@
   apt:
     name: "{{ nginx_packages }}"
     state: present
+
+- name: Virtual hosts are configured
+  template: 
+    src: "httpd.conf.j2"
+    dest: "/etc/httpd/conf.d/{{ key_name }}.conf" 
+
+- name: Web server is started and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: yes

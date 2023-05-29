@@ -1,0 +1,14 @@
+server {
+    listen 80;
+    server_name {{ key_name }}.{{ domain }};
+    return 301 https://$host$request_uri;
+}
+server {
+    listen 443 ssl;
+    server_name {{ key_name }}.{{ domain }};
+    ssl_certificate /etc/pki/tls/certs/{{ domain }}.crt;
+    ssl_certificate_key /etc/pki/tls/private/{{ key_name }}.key;
+    location / {
+        root /sites/$domain;
+    }
+}
