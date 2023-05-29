@@ -21,12 +21,28 @@
      recurse: yes
      follow: no
      setype: _default
+
+ - name: Ensuring tls directory exists
+   file:
+     path: /etc/pki/tls/
+     recurse: true
+     state: directory
+
+ - name: Ensuring certs and key directory exists
+   file:
+     path: "/etc/pki/tls/{{ item }}"
+     state: directory
+   loop: 
+   - certs
+   - private  
+  
  - name: Virtual host TLS certs in place5
    copy:
      src: "{{ path }}/{{ key_name }}.key"
      dest: "/etc/pki/tls/certs"
+     remote_src: true
  - name: Virtual host TLS private keys in place
    copy:
      src: "{{ path }}/{{ domain }}.crt"
      dest: "/etc/pki/tls/private"
-    
+     remote_src: true
