@@ -1,0 +1,11 @@
+---
+ - name: Configuring Webserver
+   hosts: localhost
+   vars_files:
+   - vars/variable.yaml
+   tasks:
+   - name: Generating SSL
+     import_tasks: tasks/ssl_generate.yaml
+
+   - name: Setting up directory and certificates
+     import_tasks: tasks/web_content.yaml

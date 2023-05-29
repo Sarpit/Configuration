@@ -1,0 +1,22 @@
+---
+- name: Generating Private key 
+  openssl_privatekey:
+    path: "{{ path }}/{{ key_name }}.key"
+
+- name: Generate an OpenSSL Certificate Signing Request
+  openssl_csr:
+    path: "{{ path }}/{{ key_name }}.{{ domain}}.csr"
+    privatekey_path: "{{ path }}/{{ key_name }}.key"
+    common_name: "{{ key_name }}.{{ domain }}"
+    C: "{{ C }}"
+    ST: "{{ ST }}"
+    L: "{{ L }}"
+    O: "{{ O }}"
+    backup: yes
+    
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{ path }}/{{ domain }}.crt"
+    privatekey_path: "{{ path }}/{{ key_name }}.key"
+    csr_path: "{{ path }}/{{ key_name }}.{{ domain}}.csr"
+    provider: selfsigned
