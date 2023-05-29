@@ -39,10 +39,10 @@
  - name: Virtual host TLS certs in place5
    copy:
      src: "{{ path }}/{{ key_name }}.key"
-     dest: "/etc/pki/tls/certs"
+     dest: "/etc/pki/tls/private"
      remote_src: true
  - name: Virtual host TLS private keys in place
    copy:
      src: "{{ path }}/{{ domain }}.crt"
-     dest: "/etc/pki/tls/private"
+     dest: "/etc/pki/tls/certs"
      remote_src: true
