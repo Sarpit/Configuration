@@ -10,6 +10,6 @@ server {
     ssl_certificate_key /etc/pki/tls/private/{{ key_name }}.key;
     location / {
         root /var/www/{{ key_name }};
-        index index.html index.htm
+        index index.html index.htm;
     }
 }
