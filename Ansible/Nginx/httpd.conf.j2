@@ -9,6 +9,6 @@ server {
     ssl_certificate /etc/pki/tls/certs/{{ domain }}.crt;
     ssl_certificate_key /etc/pki/tls/private/{{ key_name }}.key;
     location / {
-        root /sites/$domain;
+        root /var/www/{{ key_name }};
     }
 }
