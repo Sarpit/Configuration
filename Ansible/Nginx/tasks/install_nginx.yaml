@@ -6,7 +6,7 @@
 - name: Virtual hosts are configured
   template: 
     src: "httpd.conf.j2"
-    dest: "/etc/httpd/conf.d/{{ key_name }}.conf" 
+    dest: "/etc/nginx/conf.d/{{ key_name }}.conf" 
 
 - name: Web server is started and enabled
   service:
