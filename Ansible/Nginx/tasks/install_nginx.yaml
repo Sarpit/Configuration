@@ -7,6 +7,8 @@
   template: 
     src: "httpd.conf.j2"
     dest: "/etc/nginx/conf.d/{{ key_name }}.conf" 
+  notify:
+  - restart nginx
 
 - name: Web server is started and enabled
   service:
