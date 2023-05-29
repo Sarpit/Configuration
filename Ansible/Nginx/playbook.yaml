@@ -9,3 +9,6 @@
 
    - name: Setting up directory and certificates
      import_tasks: tasks/web_content.yaml
+
+   - name: Installing Nginx
+     import_tasks: tasks/install_nginx.yaml

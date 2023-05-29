@@ -5,3 +5,4 @@ C: US
 ST: North Carolina
 L: Raleigh
 O: "Example, Inc."
+nginx_packages: nginx
