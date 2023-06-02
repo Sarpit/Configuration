@@ -1,0 +1,17 @@
+Add Prometheus datasource in Grafana. Follow below given steps for that:
+
+# Login into Grafana and click on Add your first datasource.
+# Then select Prometheus and enter http://localhost:9090 in the URL box.
+# Finally click on Save and test button at the bottom.
+# Click on Grafana logo to move back to the dashboard.
+
+
+Follow below given steps to create a dashboard in Grafana:
+
+# Login into Grafana and click on Create your first dashboard.
+# Then click on Add a new panel and at the bottom enter jenkins_job_count_value in the Metrics browser box.
+# Make sure Prometheus is selected as the Data source.
+# On the right side under Panel options, enter Jenkins Jobs Count in Title.
+# Click on Apply button on the top right corner.
+# Finally click on the Save dashboard button (second button on the top right).
+# Enter dashboard name as Jenkins and save it.
