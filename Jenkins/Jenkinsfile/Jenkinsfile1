@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("dev") {
+            steps {
+                git 'https://github.com/kodekloudhub/go-webapp-sample.git'
+            }   
+        }
+
+        stage("stage") {
+            steps {
+                sh 'go test ./...'
+            }
+        }
+
+        stage("prod") {
+            steps {
+                script {
+                    image = docker.build("adminturneddevops/go-webapp-sample")
+                    sh "docker run -p 8090:8000 -d adminturneddevops/go-webapp-sample"
+                }
+            }
+        }
+    }
+}

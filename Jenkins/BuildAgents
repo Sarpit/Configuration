@@ -1,0 +1,23 @@
+########################################
+## CONFIGURING BUILD AGENTS ON UBUNTU ##
+########################################
+
+
+
+## ON AGENT NODE
+
+1. INSTALL JAVA
+$sudo apt update
+$sudo apt install openjdk-11-jdk -y
+
+2. Create a user and set password
+$sudo useradd bob -m --shell /bin/bash --home-dir /home/bob
+$sudo passwd bob
+
+
+
+## ON JENKINS
+
+1. Install "SSH Build Agents" Jenkins plugin.
+2. Make username/password credentials
+3. Create a Permanent Agent type agent node

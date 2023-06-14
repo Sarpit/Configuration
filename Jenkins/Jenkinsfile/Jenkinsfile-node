@@ -1,0 +1,14 @@
+pipeline {
+    agent {
+        node {
+            label 'ubuntuagent'
+        }
+    }
+    stages {
+        stage('Hello') {
+            steps {
+                sh 'echo "Hello World"'
+            }
+        }
+    }
+}

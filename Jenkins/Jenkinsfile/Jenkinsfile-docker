@@ -1,0 +1,11 @@
+pipeline {
+    agent { docker 'alpine'}
+
+    stages {
+        stage('Hello') {
+            steps {
+                sh 'echo "Hello World"'
+            }
+        }
+    }
+}
