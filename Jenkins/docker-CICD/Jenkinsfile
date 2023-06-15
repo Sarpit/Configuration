@@ -13,8 +13,8 @@ pipeline {
                     dir('Jenkins/docker-CICD') {
                         sh 'ls && pwd'
                         sh 'echo "${registry}"'        
+                        dockerImage = docker.build("${registry}:${BUILD_NUMBER}")
                     }
-                    
                 }
             }
         }
