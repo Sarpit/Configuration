@@ -12,9 +12,12 @@ pipeline {
                 script {
                     dir('Jenkins/docker-CICD') {
                         sh 'ls && pwd'
+                        sh 'echo "test archive > archive.txt"'
                         sh 'echo "${registry}"'        
                         dockerImage = docker.build("${registry}:${BUILD_NUMBER}")
                         dockerImageLatest = docker.build("${registry}:latest")
+
+                        archiveArtifacts artifacts: '*.txt', followSymlinks: false
                     }
                 }
             }
