@@ -19,6 +19,16 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                script {
+                    dockerImage.inside {
+                        sh 'cat /usr/share/www/html/index.html'
+                    }
+                }
+            }
+        }
+        
         stage('Push') {
             steps {
                 script {
