@@ -18,5 +18,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Push') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'dockerhub') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }   
     }
 }
