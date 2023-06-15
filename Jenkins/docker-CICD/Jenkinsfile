@@ -10,8 +10,11 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'ls && pwd'
-                    sh 'echo "${registry}"'
+                    dir('Jenkins/docker-CICD') {
+                        sh 'ls && pwd'
+                        sh 'echo "${registry}"'        
+                    }
+                    
                 }
             }
         }
