@@ -1,0 +1,57 @@
+ - name: Filters
+   hosts: all
+   vars:
+     num: [1,2,5,2,1,10]
+   tasks:
+   - name: Picking up random
+     ansible.builtin.debug:
+       msg: "{{ ['Douglas', 'Marvin', 'Arthur'] | random }}"
+
+   - name: sum of list
+     ansible.builtin.debug:
+       msg: "sum is {{ num | sum }}"
+    
+   - name: sum of list is 21 or not
+     ansible.builtin.assert:
+       that: "{{ num | sum }} is eq( 21 )"
+
+   - name: length of list
+     ansible.builtin.debug:
+       msg: "length is {{ num | length }}"
+   
+   - name: first of list
+     ansible.builtin.debug:
+       msg: "first number is {{ num | first }}"
+
+   - name: last of list
+     ansible.builtin.debug:
+       msg: "last number is {{ num | last }}"
+
+   - name: reverse of list
+     ansible.builtin.debug:
+       msg: "sum is {{ num | reverse }}"
+
+   - name: sorting  list
+     ansible.builtin.debug:
+       msg: "sum is {{ num | sort }}"
+
+   - name: merging list
+     ansible.builtin.debug:
+       msg: "{{ [ 1, 2, [3, 4], 5 ] | flatten }}"
+
+   - name: unique set operations
+     ansible.builtin.debug:
+       msg: "{{ num | unique }}"
+
+   - name: difference set operations
+     ansible.builtin.debug:
+       msg: "{{  num | unique | difference([5,10]) }}"
+
+   - name: union set operations
+     ansible.builtin.debug:
+       msg: "{{ num | union([7,8]) }}"
+
+   - name: intersection set operations
+     ansible.builtin.debug:
+       msg: "{{ num | intersect([5,10]) }}"
+

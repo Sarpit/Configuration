@@ -1,0 +1,14 @@
+---
+ - name: Filters
+   hosts: all
+   vars:
+     pattern: "some text"
+   tasks:
+   - name: printing pattern
+     ansible.builtin.debug:
+       msg: "{{ item }}"
+     loop:
+     - "{{ pattern | regex_search('test') | default('MESSAGE') }}"
+     - "{{ pattern | regex_search('test') | default('MESSAGE', true)}}"
+     - "{{ pattern | bool | default('MESSAGE') }}"
+     - "{{ pattern | bool | default('MESSAGE', true)  }}"

@@ -1,0 +1,11 @@
+---
+ - name: Filters
+   hosts: localhost
+   tasks:
+   - name: omitting if book2 var not defined
+     debug:
+       msg: "{{ book1 | default(omit) }}" 
+    
+   - name: using default value of var not defined
+     debug:
+       msg: "{{ book2 | default('ikigai') }}"

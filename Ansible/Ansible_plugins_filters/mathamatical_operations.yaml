@@ -1,0 +1,20 @@
+---
+ - name: Filters
+   hosts: localhost
+   vars:
+   - num1: "3"
+   - num2: 4.5
+   - num3: "9"
+   tasks:
+   - name: Adding 
+     ansible.builtin.debug:
+       msg: "addition: {{  ( num1 | int ) + 1 }} "
+
+   - name: rounding 
+     ansible.builtin.debug:
+       msg: "rounding: {{ num2 | round }} "
+
+   - name: root
+     ansible.builtin.debug:
+       msg: "root: {{  num3 | int | root }}"
+

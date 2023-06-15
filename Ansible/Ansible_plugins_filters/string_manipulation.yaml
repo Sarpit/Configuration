@@ -1,0 +1,50 @@
+---
+ - name: Filters
+   hosts: localhost
+   vars:
+     hosts:
+       name: servera
+       ip:
+       - 192.168.0.2
+       - 192.168.0.2
+     hosts_json: '[{"name": "bastion", "ip": ["172.25.250.254", "172.25.252.1"]}]'  
+   tasks:
+   - name: generating password hash
+     ansible.builtin.debug:
+       msg: "{{ 'Ansible' | hash('sha1') }}"
+
+   - name: generating password hash
+     ansible.builtin.debug:
+       msg: "{{ 'Ansible' | password_hash('sha1') }}"
+
+   - name: encoding string
+     ansible.builtin.debug:
+       msg: "{{ 'Ansible' | b64encode }}"
+
+   - name: decoding string
+     ansible.builtin.debug:
+       msg: "{{ 'YWJj' | b64decode }}"
+
+   - name: lowercase
+     ansible.builtin.debug:
+       msg: "{{ 'Ansible' | lower }}"
+    
+   - name: uppercase
+     ansible.builtin.debug:
+       msg: "{{ 'Ansible' | upper }}"
+
+   - name: capitalize
+     ansible.builtin.debug:
+       msg: "{{ 'Ansible' | capitalize }}"
+
+   - name: Replacing test
+     ansible.builtin.debug:
+       msg: "{{ 'Ansible' | replace('ib','IB') }}"
+
+   - name: yaml to json
+     ansible.builtin.debug:
+       msg: "{{ hosts | to_json }}"
+
+   - name: json to yaml
+     ansible.builtin.debug:
+       msg: "{{ hosts_json | to_yaml }}"

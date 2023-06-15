@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    environment {
+        registry = "arpitdoc/nginx-sample"
+        registryCredentials = 'dockerhub'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    sh 'ls && pwd'
+                    sh 'echo "${env.registry}"'
+                }
+            }
+        }
+    }
+}

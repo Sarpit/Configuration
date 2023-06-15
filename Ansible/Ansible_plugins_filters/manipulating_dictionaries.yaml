@@ -1,0 +1,27 @@
+---
+ - name: Filters
+   hosts: localhost
+   vars:
+     expected:
+       A: 5
+       B: 3
+     char_dict:
+       john: lery
+       xin: chao
+     char_item:
+       - key: tom
+         value: holland
+       - key: human
+         value: robot
+   tasks:
+   - name: Combining 2 dictionaries using dict2items filters
+     ansible.builtin.debug:
+       msg: "{{ expected | combine({'C':2, 'D':7 }) }}"
+
+   - name: converting dict to items
+     ansible.builtin.debug:
+       msg: "{{ char_dict | dict2items }}"
+
+   - name: converting items to dict using items2dict
+     ansible.builtin.debug:
+       msg: "{{ char_item | items2dict }}"
