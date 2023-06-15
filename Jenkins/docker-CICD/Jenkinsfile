@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     sh 'ls && pwd'
-                    sh 'echo "${env.registry}"'
+                    sh 'echo "${registry}"'
                 }
             }
         }
