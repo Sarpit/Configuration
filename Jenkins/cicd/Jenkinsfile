@@ -1,0 +1,33 @@
+pipeline {
+    agent any 
+
+    environment {
+        registry = arpitdoc/nginx-test
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    sh 'echo "BUILD STAGE"'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    sh 'echo "Test STAGE"'
+                }
+            }
+        }
+
+        stage('Push') {
+            steps {
+                script {
+                    sh 'echo "Push STAGE"'
+                }
+            }
+        }
+    }
+}

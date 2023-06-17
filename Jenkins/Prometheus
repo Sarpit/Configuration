@@ -76,7 +76,7 @@ $sudo systemctl enable prometheus --now
 $service prometheus restart 
 
 # localhost:8085 refers to our Jenkins Controller
-# /prometheus/ metrics path is exposed by the "prometheus-metrics" plugin that we installed previously
+# /prometheus/ metrics path is exposed by the "prometheus-metrics" plugin that has to be installed
 
 
 #Run Sample Prometheus Query
