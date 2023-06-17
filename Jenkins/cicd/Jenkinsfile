@@ -2,7 +2,7 @@ pipeline {
     agent any 
 
     environment {
-        registry = arpitdoc/nginx-test
+        registry = "arpitdoc/nginx-test"
     }
 
     stages {
