@@ -10,6 +10,7 @@ pipeline {
             steps {
                 script {
                     sh 'echo "BUILD STAGE"'
+                    sh 'whoami'
                     sh 'ls'
                     sh 'pwd'
                     dockerImage  = docker.build("$image:$BUILD_NUMBER")
