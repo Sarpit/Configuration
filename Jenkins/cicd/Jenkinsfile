@@ -24,6 +24,9 @@ pipeline {
             steps {
                 script {
                     sh 'echo "Test STAGE"'
+                    dockerImage.inside() {
+                        sh 'cat /usr/share/www/html/index.html'
+                    }
                 }
             }
         }
