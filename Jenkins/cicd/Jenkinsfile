@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         image = "arpitdoc/nginx-test"
+        registryCredentials = 'dockerhub'
     }
 
     stages {
@@ -34,7 +35,9 @@ pipeline {
         stage('Push') {
             steps {
                 script {
-                    sh 'echo "Push STAGE"'
+                    withDockerRegistry(credentialsId: registryCredentials) {
+                        dockerImage.push()
+                    }
                 }
             }
         }
