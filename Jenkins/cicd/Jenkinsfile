@@ -2,7 +2,7 @@ pipeline {
     agent any 
 
     environment {
-        registry = "arpitdoc/nginx-test"
+        image = "arpitdoc/nginx-test"
     }
 
     stages {
@@ -10,6 +10,9 @@ pipeline {
             steps {
                 script {
                     sh 'echo "BUILD STAGE"'
+                    sh 'ls'
+                    sh 'pwd'
+                    dockerImage  = docker.build("$image:$BUILD_NUMBER")
                 }
             }
         }
