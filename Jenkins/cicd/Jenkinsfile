@@ -16,6 +16,8 @@ pipeline {
                         sh 'ls'
                         sh 'pwd'
                         dockerImage  = docker.build("$image:$BUILD_NUMBER")
+
+                        archiveArtifacts artifacts: '*.txt', followSymlinks: false
                     }  
                 }
             }
@@ -38,8 +40,6 @@ pipeline {
                     withDockerRegistry(credentialsId: registryCredentials) {
                         dockerImage.push()
                     }
-
-                    archiveArtifacts artifacts: '*.txt', followSymlinks: false
                 }
             }
         }
