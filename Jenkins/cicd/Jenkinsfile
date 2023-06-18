@@ -38,6 +38,8 @@ pipeline {
                     withDockerRegistry(credentialsId: registryCredentials) {
                         dockerImage.push()
                     }
+
+                    archiveArtifacts artifacts: '*.txt', followSymlinks: false
                 }
             }
         }
