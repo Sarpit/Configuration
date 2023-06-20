@@ -1,0 +1,27 @@
+---
+# tasks file for kubeadm
+ - name: Getting Total memory
+   ansible.builtin.debug:
+     msg: "{{ ansible_facts }}"
+
+ - name: Getting Total memory
+   ansible.builtin.debug:
+     msg: "Total memory in Mi: {{ ansible_facts.memtotal_mb }}"
+   
+ - name: Setting memory size
+   ansible.builtin.set_fact:
+     memory: "{{ ansible_facts.memtotal_mb }}"
+   
+ - debug: var=memory
+
+ - fail:
+     msg: "Memory not sufficient, Machine should have atleast 4GB Memory"
+   when:  ( ansible_facts.memtotal_mb | int ) < 3877
+
+ - name: Getting cpu cores
+   ansible.builtin.debug:
+     msg: "Total core: {{ ansible_facts.processor_count }}"
+
+ - fail:
+     msg: "Cpu not sufficient, Machine should have atleast 2 cpu cores"
+   when:  ( ansible_facts.processor_count | int ) < 2

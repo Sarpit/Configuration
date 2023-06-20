@@ -1,0 +1,9 @@
+---
+ - name: Installing kubeadm
+   hosts: localhost
+   roles:
+   - role: pre-check
+     become: false
+
+   - role: basic-config
+     become: true
