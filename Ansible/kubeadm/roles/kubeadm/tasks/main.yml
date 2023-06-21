@@ -1,0 +1,69 @@
+---
+ - name: Install dependencies
+   apt:
+     name: "{{ item }}"
+     state: present
+     update_cache: yes
+   loop: "{{ kubeadm_dependencies }}"
+     
+
+ - name: Add Kubernetes apt-key
+   apt_key:
+     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+     state: present
+
+ - name: Add Kubernetes apt repository
+   apt_repository:
+     repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+     state: present
+     filename: kubernetes
+
+ - name: Install Kubernetes packages
+   apt:
+     name: "{{ item }}"
+     state: present
+     update_cache: yes
+   loop: "{{ k8s_packages }}"
+
+ - name: Marking hold Kubernetes packages
+   ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+   loop: "{{ k8s_packages }}"
+
+ - name: Checking if br_netfilter module is loaded
+   shell: lsmod | grep br_netfilter
+   register: load
+   tags:
+   - load
+ 
+ - fail:
+     msg: "br_netfilter module is not loaded"
+   when: '"br_netfilter" not in load.stdout'
+   tags:
+   - load
+
+ - name: Starting kubelet
+   service:
+     name: kubelet
+     state: started
+     enabled: true
+   when: '"br_netfilter" in load.stdout'
+   
+ - block:
+   - name: checking is kubeadm is initilased
+     stat:
+       path: /etc/kubernetes/admin.conf
+     register: file_status
+   - debug: var=file_status
+   - name: Initializing kubeadm cluster
+     shell: |
+       kubeadm init --pod-network-cidr=172.24.0.0/16 --cri-socket=unix:///var/run/docker.sock
+     when: file_status.stat.exists is false
+     register: init
+   tags: 
+   - exists
+
+ - name: Printing kubeadm init output
+   debug: var=init
+   

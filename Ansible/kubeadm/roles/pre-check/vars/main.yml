@@ -1,2 +1,5 @@
 ---
 # vars file for pre-check
+kernel_modules:
+- overlay
+- br_netfilter

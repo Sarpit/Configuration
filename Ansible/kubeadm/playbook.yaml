@@ -1,9 +1,20 @@
 ---
  - name: Installing kubeadm
    hosts: localhost
+   pre_tasks:
+   - name: pinging host
+     ansible.builtin.ping:
+
    roles:
    - role: pre-check
      become: false
 
+   - role: docker
+     become: true    
+
    - role: basic-config
      become: true
+
+   - role: kubeadm
+     become: true
+   

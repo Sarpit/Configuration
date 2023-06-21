@@ -1,2 +1,4 @@
 ---
 # handlers file for basic-config
+ - name: sysctl restart
+   shell: sysctl --system
