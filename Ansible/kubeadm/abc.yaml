@@ -1,5 +1,0 @@
-- name: play1
-  hosts: all
-  tasks:
-  - debug: var=ansible_env.HOME
-  - debug: var=ansible_env.USER
