@@ -1,10 +1,6 @@
 ---
 # vars file for kubeadm
-kubeadm_dependencies:
-- apt-transport-https
-- curl
 k8s_packages:
 - kubelet
 - kubeadm
 - kubectl
-k8s_user: arpit

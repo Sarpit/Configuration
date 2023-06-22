@@ -1,2 +1,5 @@
 ---
 # vars file for basic-config
+kernel_modules:
+- overlay
+- br_netfilter

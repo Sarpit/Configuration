@@ -1,11 +1,11 @@
 ---
 # handlers file for crio
-- name: Start crio
+- name: crio_start
   service:
     name: crio
-    state: started
+    state: restarted
     enabled: yes
 
-- name: daemon reload
+- name: daemon_reload
   systemd:
     daemon_reload: true

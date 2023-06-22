@@ -4,14 +4,16 @@
    ansible.builtin.debug:
      msg: "Total memory in Mi: {{ ansible_facts.memtotal_mb }}"
 
- - fail:
+ - name: Checking total memory is sufficient
+   ansible.builtin.fail:
      msg: "Memory not sufficient, Machine should have atleast 4GB Memory"
    when:  ( ansible_facts.memtotal_mb | int ) < 3877
 
  - name: Getting cpu cores
    ansible.builtin.debug:
-     msg: "Total core: {{ ansible_facts.processor_count }}"
+     msg: "Total core: {{ ansible_processor_cores }}"
 
- - fail:
+ - name: Checking cpu core is sufficient
+   ansible.builtin.fail:
      msg: "CPU not sufficient, Machine should have atleast 2 cpu cores"
-   when:  ( ansible_facts.processor_count | int ) < 2
+   when:  ( ansible_processor_cores | int ) < 2

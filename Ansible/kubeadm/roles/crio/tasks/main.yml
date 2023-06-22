@@ -1,37 +1,49 @@
 ---
 # tasks file for crio
 - name: Add CRI-O repository key
-  apt_key:
+  ansible.builtin.apt_key:
     url: "{{ item }}"
     state: present
   loop:
-  - https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ OS }}/Release.key
-  - https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ VERSION }}/{{ OS }}/Release.key
+  - https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/Release.key
+  - https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ CRI_VERSION }}/xUbuntu_{{ ansible_distribution_version }}/Release.key
 
-- name: Add CRI-O repository
-  apt_repository:
-    repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ OS }}/ /"
+- name: Adding CRI-O repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/ /"
     state: present
     filename: crio
 
-- name: Add CRI-O repository
-  apt_repository:
-    repo: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ VERSION }}/{{ OS }}/ /"
+- name: Adding CRI-O repository
+  ansible.builtin.apt_repository:
+    repo: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ CRI_VERSION }}/xUbuntu_{{ ansible_distribution_version }}/ /"
     state: present
     filename: crioo
 
 - name: Update apt package cache
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
 
 - name: Install CRI-O
-  apt:
+  ansible.builtin.apt:
     name: 
     - cri-o 
     - cri-o-runc
     state: present
     update_cache: yes
-  notify:
-  - Start crio
-  - daemon reload
+  register: cri
+
+- name: Starting cri service
+  #ansible.posix.service:
+  service:
+    name: crio
+    state: restarted
+    enabled: yes
+  when: cri.changed
+
+
+- name: Daemon reload
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: cri.changed
 

@@ -1,22 +1,23 @@
 ---
  - name: Disable SWAP since kubernetes can't work with swap enabled
+   #ansible.builtin.shell:
    shell: |
      swapoff -a
   
  - name: Disable SWAP in fstab
-   replace:
+   ansible.builtin.replace:
      path: /etc/fstab
      regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
      replace: '# \1'
 
- - name: Add the {{ item }} module
+ - name: Adding overlay and br_netfilter module
    #community.general.modprobe:
    modprobe:
      name: "{{ item }}"
      state: present
    loop: "{{ kernel_modules }}"
 
- - name: Setting some settings to sysctl
+ - name: Setting up sysctl
    ansible.builtin.blockinfile:
      path: /etc/sysctl.d/kubernetes.conf
      create: true
@@ -24,5 +25,10 @@
        net.bridge.bridge-nf-call-ip6tables = 1
        net.bridge.bridge-nf-call-iptables = 1
        net.ipv4.ip_forward = 1
-   notify: 
-   - sysctl restart
+   register: sysctl
+
+ - name: sysctl restart
+   #ansible.builtin.shell:
+   shell: |
+     sysctl --system
+   when: sysctl.changed

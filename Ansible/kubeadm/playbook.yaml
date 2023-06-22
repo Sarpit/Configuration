@@ -1,20 +1,26 @@
 ---
  - name: Installing kubeadm
-   hosts: localhost
+   hosts: master_node
    pre_tasks:
    - name: pinging host
      ansible.builtin.ping:
+     register: connect
+
+   - name: Failing if host is connection not established
+     fail:
+       msg: Connecting not established
+     when: connect.ping is not eq("pong")
 
    roles:
-   - role: pre-check
-     become: false
+#   - role: pre-check
+#     become: false
 
 #   - role: basic-config
 #     become: true
-#
+
 #   - role: crio
 #     become: true    
-#
-#   - role: kubeadm
-#     become: true
+
+   - role: kubeadm
+     become: true
    

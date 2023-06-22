@@ -1,104 +1,94 @@
 ---
- - name: Install dependencies
-   apt:
-     name: "{{ item }}"
+ - name: Install kubeadm dependencies
+   ansible.builtin.apt:
+     name: 
+     - apt-transport-https
+     - curl
      state: present
      update_cache: yes
-   loop: "{{ kubeadm_dependencies }}"
      
-
- - name: Add Kubernetes apt-key
-   apt_key:
+ - name: Adding Kubernetes apt-key
+   ansible.builtin.apt_key:
      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
      state: present
 
- - name: Add Kubernetes apt repository
-   apt_repository:
+ - name: Adding Kubernetes apt repository
+   ansible.builtin.apt_repository:
      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
      state: present
      filename: kubernetes
 
  - name: Install Kubernetes packages
-   apt:
-     name: "{{ item }}"
+   ansible.builtin.apt:
+     name: 
+     - kubelet
+     - kubeadm
+     - kubectl
      state: present
      update_cache: yes
-   loop: "{{ k8s_packages }}"
 
- - name: Marking hold Kubernetes packages
+ - name: Marking hold on Kubernetes packages
    ansible.builtin.dpkg_selections:
     name: "{{ item }}"
     selection: hold
    loop: "{{ k8s_packages }}"
 
  - name: Checking if br_netfilter module is loaded
+   #ansible.builtin.shell:
    shell: lsmod | grep br_netfilter
    register: load
-   tags:
-   - load
  
- - fail:
+ - ansible.builtin.fail:
      msg: "br_netfilter module is not loaded"
    when: '"br_netfilter" not in load.stdout'
-   tags:
-   - load
 
  - name: Starting kubelet
+   #ansible.poxis.service:
    service:
      name: kubelet
      state: started
      enabled: true
    when: '"br_netfilter" in load.stdout'
-   
- - block:
-   - name: checking is kubeadm is initilased
-     stat:
-       path: /etc/kubernetes/admin.conf
-     register: file_status
 
-   - debug: var=file_status
+ - name: checking if kubeadm is initilased
+   ansible.builtin.stat:
+     path: /etc/kubernetes/admin.conf
+   register: file_status
 
-   - name: Initializing kubeadm cluster
-     shell: |
-       kubeadm init --pod-network-cidr=10.85.0.0/16 --cri-socket=unix:///var/run/crio/crio.sock
-     when: file_status.stat.exists is false
-     register: init
-   tags: 
-   - exists
+ - name: Initializing kubeadm cluster
+   #ansible.builtin.shell:
+   shell: |
+     kubeadm init --pod-network-cidr=10.85.0.0/16 --cri-socket=unix:///var/run/crio/crio.sock
+   when: file_status.stat.exists is false
+   register: init
 
  - name: Printing kubeadm init output
-   debug: var=init
+   ansible.builtin.debug: var=init.stdout_lines
 
  - block:
-   - file:
-       path: /etc/kubernetes/admin.conf
-       mode: "640"
    - name: Creating .kube dir
-     file:
-       path: "/home/{{ k8s_user }}/.kube"
+     ansible.builtin.file:
+       path: "{{ ansible_env.HOME }}/.kube"
        state: directory
-     ignore_errors: true
+
+   - name: checking if kubeadm is initilased
+     ansible.builtin.stat:
+       path: "{{ ansible_env.HOME }}/.kube/config"
+     register: config_status
 
    - name: Copying config file
-     copy:
-       src: /etc/kubernetes/admin.conf
-       dest: "/home/{{ k8s_user }}/.kube/config"  
-       user: "{{ k8s_user }}"
-       group: "{{ k8s_user }}"
-       src_remote: true
+     #ansible.builtin.shell:
+     shell: |
+       sudo cp -i /etc/kubernetes/admin.conf {{ ansible_env.HOME }}/.kube/config
+       sudo chown {{ ansible_env.USER }}:{{ ansible_env.USER }} {{ ansible_env.HOME }}/.kube/config
+     when: config_status.stat.exists is false
      register: cp
-      
-   - debug: var=cp
 
    - name: Manual copy
-     debug:
+     ansible.builtin.debug:
        msg: |
          manually run the follwoing command:
          1. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
          2. sudo chown $(id -u):$(id -g) $HOME/.kube/config
-     when: cp.failed == true
-     
-   when: k8s_user is defined
+     when: cp is defined and cp.failed == true
    ignore_errors: true
-   tags:
-   - after
