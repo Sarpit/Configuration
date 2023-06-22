@@ -70,6 +70,9 @@
    debug: var=init
 
  - block:
+   - file:
+       path: /etc/kubernetes/admin.conf
+       mode: "640"
    - name: Creating .kube dir
      file:
        path: "/home/{{ k8s_user }}/.kube"
@@ -79,9 +82,22 @@
    - name: Copying config file
      copy:
        src: /etc/kubernetes/admin.conf
-       dest: "/home/{{ k8s_user }}/.kube/config"
+       dest: "/home/{{ k8s_user }}/.kube/config"  
        user: "{{ k8s_user }}"
-       group: "{{ k8s_user }}"   
+       group: "{{ k8s_user }}"
+       src_remote: true
+     register: cp
+      
+   - debug: var=cp
+
+   - name: Manual copy
+     debug:
+       msg: |
+         manually run the follwoing command:
+         1. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
+         2. sudo chown $(id -u):$(id -g) $HOME/.kube/config
+     when: cp.failed == true
+     
    when: k8s_user is defined
    ignore_errors: true
    tags:
