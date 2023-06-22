@@ -1,0 +1,4 @@
+---
+# vars file for crio
+OS: "xUbuntu_20.04"
+VERSION: 1.27

@@ -1,0 +1,37 @@
+---
+# tasks file for crio
+- name: Add CRI-O repository key
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  loop:
+  - https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ OS }}/Release.key
+  - https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ VERSION }}/{{ OS }}/Release.key
+
+- name: Add CRI-O repository
+  apt_repository:
+    repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ OS }}/ /"
+    state: present
+    filename: crio
+
+- name: Add CRI-O repository
+  apt_repository:
+    repo: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ VERSION }}/{{ OS }}/ /"
+    state: present
+    filename: crioo
+
+- name: Update apt package cache
+  apt:
+    update_cache: yes
+
+- name: Install CRI-O
+  apt:
+    name: 
+    - cri-o 
+    - cri-o-runc
+    state: present
+    update_cache: yes
+  notify:
+  - Start crio
+  - daemon reload
+

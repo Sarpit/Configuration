@@ -55,10 +55,12 @@
      stat:
        path: /etc/kubernetes/admin.conf
      register: file_status
+
    - debug: var=file_status
+
    - name: Initializing kubeadm cluster
      shell: |
-       kubeadm init --pod-network-cidr=172.24.0.0/16 --cri-socket=unix:///var/run/docker.sock
+       kubeadm init --pod-network-cidr=10.85.0.0/16 --cri-socket=unix:///var/run/crio/crio.sock
      when: file_status.stat.exists is false
      register: init
    tags: 
@@ -66,4 +68,21 @@
 
  - name: Printing kubeadm init output
    debug: var=init
-   
+
+ - block:
+   - name: Creating .kube dir
+     file:
+       path: "/home/{{ k8s_user }}/.kube"
+       state: directory
+     ignore_errors: true
+
+   - name: Copying config file
+     copy:
+       src: /etc/kubernetes/admin.conf
+       dest: "/home/{{ k8s_user }}/.kube/config"
+       user: "{{ k8s_user }}"
+       group: "{{ k8s_user }}"   
+   when: k8s_user is defined
+   ignore_errors: true
+   tags:
+   - after
