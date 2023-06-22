@@ -9,12 +9,12 @@
    - role: pre-check
      become: false
 
-   - role: basic-config
-     become: true
-
-   - role: crio
-     become: true    
-
-   - role: kubeadm
-     become: true
+#   - role: basic-config
+#     become: true
+#
+#   - role: crio
+#     become: true    
+#
+#   - role: kubeadm
+#     become: true
    
