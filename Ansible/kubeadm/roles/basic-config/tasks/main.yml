@@ -1,4 +1,8 @@
 ---
+ - name: Set hostname to Master
+   ansible.builtin.hostname:
+     name: master
+
  - name: Disable SWAP since kubernetes can't work with swap enabled
    #ansible.builtin.shell:
    shell: |
