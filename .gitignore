@@ -1,2 +1,4 @@
 Ansible/kubeadm/ansible.cfg
 Ansible/kubeadm/inventory
+Ansible/Secure-Server/ansible.cfg
+Ansible/Secure-Server/inventory

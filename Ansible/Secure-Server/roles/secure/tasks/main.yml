@@ -1,0 +1,15 @@
+---
+# tasks file for secure
+ - name: Disable root login
+   lineinfile:
+     path: /etc/ssh/sshd_config
+     regexp: '^#PermitRootLogin'
+     line: 'PermitRootLogin no'
+   notify: restart sshd
+
+ - name: Disable Password based authentication
+   lineinfile:
+     path: /etc/ssh/sshd_config
+     regexp: '^PasswordAuthentication'
+     line: 'PasswordAuthentication no'
+   notify: restart sshd

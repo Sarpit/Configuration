@@ -1,0 +1,12 @@
+---
+ - name: Securing Ubuntu Server
+   hosts: server
+   pre_tasks: []
+
+   roles:
+   - secure
+
+   tasks: []
+
+   post_tasks: []
+    
