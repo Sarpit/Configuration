@@ -25,6 +25,7 @@ echo "Installing node version $version.."
 nvm install $version
 if [[ $? != 0 ]]; then
     echo "Incorrect version, please re-run the script"
+    exit 1
 fi
 echo ""
 
