@@ -6,6 +6,8 @@
    roles:
    - secure
 
+   - nodejs
+
    tasks: []
 
    post_tasks: []

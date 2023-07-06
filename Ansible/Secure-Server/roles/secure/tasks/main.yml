@@ -13,3 +13,30 @@
      regexp: '^PasswordAuthentication'
      line: 'PasswordAuthentication no'
    notify: restart sshd
+
+ - name: Update apt package cache
+   apt:
+     update_cache: yes
+
+ - name: Installing Fail2ban 
+   apt:
+     name: fail2ban
+     state: present
+
+ - name: Start and Enabling Fail2ban service
+   service:
+     name: fail2ban
+     state: started
+     enabled: true
+
+ - name: Copying Fail2ban file for sshd service
+   copy: 
+     src: jail-sshd.conf
+     dest: /etc/fail2ban/jail.d/
+   notify:
+   - reload fail2ban
+
+ - name: Set timezone to Asia/Kolkata
+   timezone:
+     name: Asia/Kolkata
+ 

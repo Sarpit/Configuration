@@ -1,0 +1,15 @@
+---
+# tasks file for nodejs
+ - name: Add Node.js PPA repository
+   apt_repository:
+     repo: "deb https://deb.nodesource.com/node_14.x {{ ansible_distribution_release }} main"
+     state: present
+     filename: nodesource
+     update_cache: yes
+     
+ - name: Install Node.js and npm
+   apt:
+     name:
+       - nodejs
+       - npm
+     state: present
